@@ -63,12 +63,12 @@ public class BladePebble extends CordovaPlugin {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(Resources.TAG, "onActivityResult: " + data.getExtras());
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+         Log.d(Resources.TAG, "onActivityResult: " + intent.getExtras());
         
-        Bundle bundle = data.getBundleExtra(Resources.BLADE_INTENT_BUNDLE_RESPONSE);
+        Bundle bundle = intent.getBundleExtra(Resources.BLADE_INTENT_BUNDLE_RESPONSE);
         if (resultCode == Activity.RESULT_OK) {
-            Bundle extras = data.getExtras();
+            Bundle extras = intent.getExtras();
             try {
                 JSONArray arr = new JSONArray();
                 buildJSONObjectFromBundle(arr, extras);
@@ -82,6 +82,25 @@ public class BladePebble extends CordovaPlugin {
                 
             } catch (Exception ex) {
                 Log.e(Resources.TAG, ex.getMessage(), ex);
+            }
+        }
+    }
+
+    private void buildJSONObjectFromBundle(JSONArray parent, Bundle bundle) throws JSONException {
+        Iterator<String> it = bundle.keySet().iterator();
+        while (it.hasNext()) {
+            String key = it.next();
+            Object val = bundle.get(key);
+            if (val instanceof Bundle) {
+                JSONArray subStruct = new JSONArray();
+                buildJSONObjectFromBundle(subStruct, (Bundle) val);
+                JSONObject pair = new JSONObject();
+                pair.put(key, subStruct);
+                parent.put(pair);
+            } else {
+                JSONObject pair = new JSONObject();
+                pair.put(key, val+"");
+                parent.put(pair);
             }
         }
     }
@@ -136,7 +155,7 @@ public class BladePebble extends CordovaPlugin {
                 intent.setClassName(Resources.BLADE_APP_URL, Resources.BLADE_SVC_CLASS);
 
                 Bundle extras = new Bundle();
-                extras.putString(Resources.BLADE_INTENT_NAMESPACE, getApplicationContext().getPackageName());
+                extras.putString(Resources.BLADE_INTENT_NAMESPACE, that.cordova.getActivity().getApplicationContext().getPackageName());
                 intent.putExtra(Resources.BLADE_INTENT_BUNDLE, extras);
 
                 populateIntentData(extras, extrasMap);
