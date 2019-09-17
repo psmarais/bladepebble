@@ -8,21 +8,28 @@
  */
 package mobi.cloudone.plugins.bladepebble;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import org.apache.cordova.*;
+import android.app.Activity;
+import android.content.Intent;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.content.pm.PackageManager;
-
-import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.CallbackContext;
-import org.apache.cordova.PluginResult;
-import org.apache.cordova.PermissionHelper;
+import java.util.HashMap;
+import java.util.Iterator;
 
 public class BladePebble extends CordovaPlugin {
 
@@ -30,6 +37,7 @@ public class BladePebble extends CordovaPlugin {
     private CordovaWebView cwv;
     private WebView wv;
     private PebbleJavaScriptInterface pebbleJavaScriptInterface;
+    private String lastJsonResponseStr;
 
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
