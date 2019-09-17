@@ -1,0 +1,23 @@
+{
+  "name": "mobi.cloudone.bladepebble",
+  "version": "1.0.0",
+  "description": "",
+  "cordova": {
+    "id": "mobi.cloudone.bladepebble",
+    "platforms": [
+      "android"
+    ]
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "author": "Pieter Marais",
+  "license": "Copyright 2019 CloudOne.mobi All rights reserved"
+}
