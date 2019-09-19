@@ -257,13 +257,13 @@ public class BladePebble extends CordovaPlugin {
         @Override
         public void onInitialised() {
             Log.d(Resources.TAG, "Initialised... ");
-            appView.loadUrl("javascript:window.scannerInitialised()");
+            that.loadUrl("javascript:window.scannerInitialised()");
         }
 
         @Override
         public void onScanStarted() {
             Log.d(Resources.TAG, "Scan started... ");
-            appView.loadUrl("javascript:window.scanStarted()");
+            that.loadUrl("javascript:window.scanStarted()");
         }
 
         @Override
@@ -271,14 +271,14 @@ public class BladePebble extends CordovaPlugin {
 
             if(code.length()>0) {
                 Log.d(Resources.TAG, "Bar code scanned: " + code);
-                appView.loadUrl("javascript:window.scanSuccess(" + len + ", '" + code + "')");
+                that.loadUrl("javascript:window.scanSuccess(" + len + ", '" + code + "')");
             }
         }
 
         @Override
         public void onScanStopped() {
             Log.d(Resources.TAG, "Scan stopped... ");
-            appView.loadUrl("javascript:window.scanStopped()");
+            that.loadUrl("javascript:window.scanStopped()");
         }
 
         @Override
