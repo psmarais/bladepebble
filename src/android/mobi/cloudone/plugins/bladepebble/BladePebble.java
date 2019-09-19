@@ -48,7 +48,7 @@ public class BladePebble extends CordovaPlugin {
         super.initialize(cordova, webView);
 
         pebbleJavaScriptInterface = new PebbleJavaScriptInterface(this);
-        scannerJavaScriptInterface = new ScannerJavaScriptInterface(this);
+        scannerJavaScriptInterface = new ScannerJavaScriptInterface(this,webView);
 
         ThirdPartyScanController.getInstance().setScanListener(scannerJavaScriptInterface);
 
