@@ -237,9 +237,11 @@ public class BladePebble extends CordovaPlugin {
 
     public class ScannerJavaScriptInterface implements ThirdPartyScanListener {
         private CordovaPlugin that;
+        private CordovaWebView cwv;
 
-        public ScannerJavaScriptInterface(CordovaPlugin that) {
+        public ScannerJavaScriptInterface(CordovaPlugin that,CordovaWebView cwv) {
             this.that = that;
+            this.cwv = cwv;
         }
 
         @JavascriptInterface
@@ -257,13 +259,13 @@ public class BladePebble extends CordovaPlugin {
         @Override
         public void onInitialised() {
             Log.d(Resources.TAG, "Initialised... ");
-            this.that.loadUrl("javascript:window.scannerInitialised()");
+            cwv.loadUrl("javascript:window.scanner Initialised()");
         }
 
         @Override
         public void onScanStarted() {
             Log.d(Resources.TAG, "Scan started... ");
-            this.that.loadUrl("javascript:window.scanStarted()");
+            cwv.loadUrl("javascript:window.scanStarted()");
         }
 
         @Override
@@ -271,14 +273,14 @@ public class BladePebble extends CordovaPlugin {
 
             if(code.length()>0) {
                 Log.d(Resources.TAG, "Bar code scanned: " + code);
-                this.that.loadUrl("javascript:window.scanSuccess(" + len + ", '" + code + "')");
+                cwv.loadUrl("javascript:window.scanSuccess(" + len + ", '" + code + "')");
             }
         }
 
         @Override
         public void onScanStopped() {
             Log.d(Resources.TAG, "Scan stopped... ");
-            this.that.loadUrl("javascript:window.scanStopped()");
+            cwv.loadUrl("javascript:window.scanStopped()");
         }
 
         @Override
