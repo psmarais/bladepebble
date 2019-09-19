@@ -60,7 +60,7 @@ public class BladePebble extends CordovaPlugin {
         wv.getSettings().setBuiltInZoomControls(true);
 
         wv.addJavascriptInterface(pebbleJavaScriptInterface, "PebbleInterface");
-        wV.addJavascriptInterface(scannerJavaScriptInterface, "ScannerInterface");
+        wv.addJavascriptInterface(scannerJavaScriptInterface, "ScannerInterface");
 
     }
 
