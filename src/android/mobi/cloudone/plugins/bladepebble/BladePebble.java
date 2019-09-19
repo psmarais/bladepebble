@@ -245,25 +245,25 @@ public class BladePebble extends CordovaPlugin {
         @JavascriptInterface
         public void initialise() {
             Log.d(Resources.TAG, "Initialise scanner requested...");
-            ThirdPartyScanController.getInstance().init(that);
+            ThirdPartyScanController.getInstance().init(that.cordova.getActivity());
         }
 
         @JavascriptInterface
         public void scan() {
             Log.d(Resources.TAG, "Scan requested...");
-            ThirdPartyScanController.getInstance().startScanning(that, true);
+            ThirdPartyScanController.getInstance().startScanning(that.cordova.getActivity(), true);
         }
 
         @Override
         public void onInitialised() {
             Log.d(Resources.TAG, "Initialised... ");
-            that.loadUrl("javascript:window.scannerInitialised()");
+            this.that.loadUrl("javascript:window.scannerInitialised()");
         }
 
         @Override
         public void onScanStarted() {
             Log.d(Resources.TAG, "Scan started... ");
-            that.loadUrl("javascript:window.scanStarted()");
+            this.that.loadUrl("javascript:window.scanStarted()");
         }
 
         @Override
@@ -271,14 +271,14 @@ public class BladePebble extends CordovaPlugin {
 
             if(code.length()>0) {
                 Log.d(Resources.TAG, "Bar code scanned: " + code);
-                that.loadUrl("javascript:window.scanSuccess(" + len + ", '" + code + "')");
+                this.that.loadUrl("javascript:window.scanSuccess(" + len + ", '" + code + "')");
             }
         }
 
         @Override
         public void onScanStopped() {
             Log.d(Resources.TAG, "Scan stopped... ");
-            that.loadUrl("javascript:window.scanStopped()");
+            this.that.loadUrl("javascript:window.scanStopped()");
         }
 
         @Override
