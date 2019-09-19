@@ -31,12 +31,16 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import com.thumbzup.scanner.api.thirdparty.ThirdPartyScanController;
+import com.thumbzup.scanner.api.thirdparty.ThirdPartyScanListener;
+
 public class BladePebble extends CordovaPlugin {
 
     private static final String LOG_TAG = "BladePebble";
     private CordovaWebView cwv;
     private WebView wv;
     private PebbleJavaScriptInterface pebbleJavaScriptInterface;
+    private ScannerJavaScriptInterface scannerJavaScriptInterface;
     private String lastJsonResponseStr;
 
     @Override
@@ -44,6 +48,9 @@ public class BladePebble extends CordovaPlugin {
         super.initialize(cordova, webView);
 
         pebbleJavaScriptInterface = new PebbleJavaScriptInterface(this);
+        scannerJavaScriptInterface = new ScannerJavaScriptInterface(this);
+
+        ThirdPartyScanController.getInstance().setScanListener(scannerJavaScriptInterface);
 
         cwv = webView;
         wv = (WebView)webView.getEngine().getView();
@@ -53,6 +60,7 @@ public class BladePebble extends CordovaPlugin {
         wv.getSettings().setBuiltInZoomControls(true);
 
         wv.addJavascriptInterface(pebbleJavaScriptInterface, "PebbleInterface");
+        wV.addJavascriptInterface(scannerJavaScriptInterface, "ScannerInterface");
 
     }
 
@@ -225,6 +233,59 @@ public class BladePebble extends CordovaPlugin {
                 }
             }
         }
+    }
+
+    public class ScannerJavaScriptInterface implements ThirdPartyScanListener {
+        private CordovaPlugin that;
+
+        public ScannerJavaScriptInterface(CordovaPlugin that) {
+            this.that = that;
+        }
+
+        @JavascriptInterface
+        public void initialise() {
+            Log.d(Resources.TAG, "Initialise scanner requested...");
+            ThirdPartyScanController.getInstance().init(that);
+        }
+
+        @JavascriptInterface
+        public void scan() {
+            Log.d(Resources.TAG, "Scan requested...");
+            ThirdPartyScanController.getInstance().startScanning(that, true);
+        }
+
+        @Override
+        public void onInitialised() {
+            Log.d(Resources.TAG, "Initialised... ");
+            appView.loadUrl("javascript:window.scannerInitialised()");
+        }
+
+        @Override
+        public void onScanStarted() {
+            Log.d(Resources.TAG, "Scan started... ");
+            appView.loadUrl("javascript:window.scanStarted()");
+        }
+
+        @Override
+        public void onScanSuccess(int len, String code) {
+
+            if(code.length()>0) {
+                Log.d(Resources.TAG, "Bar code scanned: " + code);
+                appView.loadUrl("javascript:window.scanSuccess(" + len + ", '" + code + "')");
+            }
+        }
+
+        @Override
+        public void onScanStopped() {
+            Log.d(Resources.TAG, "Scan stopped... ");
+            appView.loadUrl("javascript:window.scanStopped()");
+        }
+
+        @Override
+        public void onDisconnect() {
+            Log.d(Resources.TAG, "Disconnected... ");
+        }
+
     }
 
 

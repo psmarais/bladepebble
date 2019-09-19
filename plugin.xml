@@ -19,6 +19,9 @@
                  <param name="onload" value="true" />
             </feature>
         </config-file>
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="com.thumbzup.scanner.api.SCAN_SERVICE" />
+        </config-file>
         <source-file src="src/android/mobi/cloudone/plugins/bladepebble/BladePebble.java" target-dir="src/mobi/cloudone/plugins/bladepebble"/>
         <source-file src="src/android/mobi/cloudone/plugins/bladepebble/Resources.java" target-dir="src/mobi/cloudone/plugins/bladepebble"/>
         <resource-file src="aar/bladethirdpartylib.aar" target="libs/bladethirdpartylib.aar"/>
