@@ -61,6 +61,7 @@ public class BladePebble extends CordovaPlugin {
 
         wv.addJavascriptInterface(pebbleJavaScriptInterface, "PebbleInterface");
         wv.addJavascriptInterface(scannerJavaScriptInterface, "ScannerInterface");
+        wv.setWebContentsDebuggingEnabled(true);
 
     }
 
